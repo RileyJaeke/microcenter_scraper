@@ -12,11 +12,11 @@ USE `microcenter_gpu_tracker` ;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `stores` (
   `store_id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(100) NOT NULL COMMENT 'e.g., \"Overland Park\" or \"Tustin\"',
+  `name` VARCHAR(100) NOT NULL COMMENT 'e.g., "Overland Park" or "Tustin"',
   `city` VARCHAR(100) NOT NULL,
-  `state` CHAR(2) NOT NULL COMMENT 'e.g., \"KS\" or \"CA\"',
+  `state` CHAR(2) NOT NULL COMMENT 'e.g., "KS" or "CA"',
   PRIMARY KEY (`store_id`),
-  UNIQUE INDEX `idx_store_location` (`name` ASC, `city` ASC, `state` ASC) COMMENT 'Ensures we don\'t add the same store twice.'
+  UNIQUE INDEX `idx_store_location` (`name` ASC, `city` ASC, `state` ASC) COMMENT 'Ensures we don''t add the same store twice.'
 )
 ENGINE = InnoDB
 COMMENT = 'List of Micro Center store locations to track.';
@@ -29,12 +29,12 @@ COMMENT = 'List of Micro Center store locations to track.';
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `gpus` (
   `gpu_id` INT NOT NULL AUTO_INCREMENT,
-  `brand` VARCHAR(45) NULL COMMENT 'e.g., \"NVIDIA\", \"AMD\", \"Intel\"',
-  `model_name` VARCHAR(100) NOT NULL COMMENT 'e.g., \"GeForce RTX 4090\"',
-  `manufacturer` VARCHAR(100) NULL COMMENT 'e.g., \"ASUS\", \"MSI\", \"Gigabyte\"',
-  `full_name` VARCHAR(255) NOT NULL COMMENT 'The full product name, e.g., \"ASUS NVIDIA GeForce RTX 4090 TUF Gaming OC\"',
+  `brand` VARCHAR(45) NULL COMMENT 'e.g., "NVIDIA", "AMD", "Intel"',
+  `model_name` VARCHAR(100) NOT NULL COMMENT 'e.g., "GeForce RTX 4090"',
+  `manufacturer` VARCHAR(100) NULL COMMENT 'e.g., "ASUS", "MSI", "Gigabyte"',
+  `full_name` VARCHAR(255) NOT NULL COMMENT 'The full product name, e.g., "ASUS NVIDIA GeForce RTX 4090 TUF Gaming OC"',
   PRIMARY KEY (`gpu_id`),
-  UNIQUE INDEX `idx_full_name` (`full_name` ASC) COMMENT 'Ensures we don\'t add the same GPU model twice.'
+  UNIQUE INDEX `idx_full_name` (`full_name` ASC) COMMENT 'Ensures we don''t add the same GPU model twice.'
 )
 ENGINE = InnoDB
 COMMENT = 'Master list of unique GPU models being tracked.';
@@ -43,19 +43,24 @@ COMMENT = 'Master list of unique GPU models being tracked.';
 -- -----------------------------------------------------
 -- Table `products`
 --
--- This is the main \"join\" table. It links a specific GPU
+-- This is the main "join" table. It links a specific GPU
 -- to a specific Store and stores the unique identifiers
 -- for that product listing (like SKU and URL).
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `products` (
   `product_id` INT NOT NULL AUTO_INCREMENT,
-  `store_id` INT NOT NULL COMMENT 'Foreign key to the `stores` table.',
-  `gpu_id` INT NOT NULL COMMENT 'Foreign key to the `gpus` table.',
+  `store_id` INT NOT NULL COMMENT 'Foreign key to the stores table.',
+  `gpu_id` INT NOT NULL COMMENT 'Foreign key to the gpus table.',
   `microcenter_sku` VARCHAR(45) NOT NULL COMMENT 'The unique SKU from the Micro Center website.',
   `product_url` VARCHAR(2048) NULL COMMENT 'The direct URL to the product page.',
   `last_seen_image_url` VARCHAR(2048) NULL COMMENT 'URL of the product image, updated as needed.',
   PRIMARY KEY (`product_id`),
-  UNIQUE INDEX `idx_sku` (`microcenter_sku` ASC) COMMENT 'The SKU should be unique across all stores.',
+  
+  -- --- UPDATED INDEX: Unique per Store ---
+  -- This ensures the same SKU can exist in multiple stores, 
+  -- but not twice in the same store.
+  UNIQUE INDEX `idx_sku_store` (`microcenter_sku` ASC, `store_id` ASC),
+  
   INDEX `fk_products_stores_idx` (`store_id` ASC),
   INDEX `fk_products_gpus_idx` (`gpu_id` ASC),
   CONSTRAINT `fk_products_stores`
@@ -82,9 +87,9 @@ COMMENT = 'Links a specific GPU to a specific Store with its unique SKU.';
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `price_history` (
   `history_id` BIGINT NOT NULL AUTO_INCREMENT,
-  `product_id` INT NOT NULL COMMENT 'Foreign key to the `products` table.',
+  `product_id` INT NOT NULL COMMENT 'Foreign key to the products table.',
   `price_usd` DECIMAL(10,2) NOT NULL COMMENT 'The price of the item at the time of scraping.',
-  `stock_status` VARCHAR(50) NOT NULL COMMENT 'e.g., \"In Stock\", \"Out of Stock\", \"Sold Out\"',
+  `stock_status` VARCHAR(50) NOT NULL COMMENT 'e.g., "In Stock", "Out of Stock", "Sold Out"',
   `scraped_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'The timestamp when this data was recorded.',
   PRIMARY KEY (`history_id`),
   INDEX `fk_price_history_products_idx` (`product_id` ASC),

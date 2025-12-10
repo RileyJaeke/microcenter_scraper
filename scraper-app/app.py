@@ -227,5 +227,4 @@ def get_product_history(product_id):
 
 if __name__ == '__main__':
     print(f"Serving frontend from: {frontend_dir}")
-    print("Starting Flask API on http://localhost:5000")
-    app.run(debug=True, port=5000)
+    app.run(debug=True, port=5000, host='0,0,0,0')

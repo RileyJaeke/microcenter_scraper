@@ -1,8 +1,8 @@
-const API_URL = 'http://localhost:5000/api/gpus';
-const HISTORY_URL = 'http://localhost:5000/api/history';
-const STORES_URL = 'http://localhost:5000/api/stores';
-const SCRAPE_URL = 'http://localhost:5000/api/scrape';
-const STATUS_URL = 'http://localhost:5000/api/status'; // New status endpoint
+const API_URL = '/api/gpus';
+const HISTORY_URL = '/api/history';
+const STORES_URL = '/api/stores';
+const SCRAPE_URL = '/api/scrape';
+const STATUS_URL = '/api/status'; // New status endpoint
 
 let allGPUs = [];
 

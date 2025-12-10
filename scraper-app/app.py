@@ -1,6 +1,6 @@
 import os
 import threading
-import time # Added time import for sleep
+import time
 from flask import Flask, jsonify, send_from_directory, make_response, request
 from flask_cors import CORS
 import mysql.connector
@@ -25,7 +25,7 @@ SCRAPE_STATUS = {
     "message": ""
 }
 
-# --- CORRECTED STORE LIST ---
+
 SUPPORTED_STORES = [
     {"name": "Overland Park", "city": "Overland Park", "state": "KS", "id": "191"},
     {"name": "Tustin", "city": "Tustin", "state": "CA", "id": "101"},
@@ -156,7 +156,6 @@ def get_gpus():
 
     cursor = conn.cursor(dictionary=True)
     
-    # UPDATED QUERY: Now joins with 'stores' table to get the store name
     query = """
     SELECT 
         p.product_id,

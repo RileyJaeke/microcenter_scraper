@@ -2,7 +2,7 @@ const API_URL = '/api/gpus';
 const HISTORY_URL = '/api/history';
 const STORES_URL = '/api/stores';
 const SCRAPE_URL = '/api/scrape';
-const STATUS_URL = '/api/status'; // New status endpoint
+const STATUS_URL = '/api/status';
 
 let allGPUs = [];
 
@@ -34,11 +34,9 @@ function populateFilters(gpus) {
     const brandSelect = document.getElementById('brand-filter');
     const storeFilter = document.getElementById('store-filter');
 
-    // 1. Save the user's current selection so we don't reset it
     const currentBrand = brandSelect.value;
     const currentStore = storeFilter.value;
 
-    // 2. Populate Brands
     // Keep the "All" option
     const brandOptions = ['<option value="all">All Brands</option>'];
     const brands = new Set();
@@ -50,7 +48,6 @@ function populateFilters(gpus) {
     });
     brandSelect.innerHTML = brandOptions.join('');
 
-    // 3. Populate Stores
     const storeOptions = ['<option value="all">All Stores</option>'];
     const stores = new Set();
     gpus.forEach(gpu => {
@@ -61,7 +58,6 @@ function populateFilters(gpus) {
     });
     storeFilter.innerHTML = storeOptions.join('');
 
-    // 4. Restore the user's selection (if it still exists in the new list)
     if (brands.has(currentBrand) || currentBrand === 'all') {
         brandSelect.value = currentBrand;
     }
@@ -153,7 +149,6 @@ function startPolling() {
                 // Refresh grid data quietly
                 await fetchGPUs(true); 
             } else {
-                // FINISHED!
                 clearInterval(pollInterval);
                 pollInterval = null;
                 
@@ -184,8 +179,6 @@ async function fetchGPUs(isPolling = false) {
         
         allGPUs = data;
         
-        // --- CHANGE: Always update filters (even when polling) ---
-        // This ensures new stores/brands appear in the dropdown immediately
         populateFilters(data);
         
         renderGPUs(data);

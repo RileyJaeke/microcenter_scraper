@@ -15,12 +15,26 @@
             <h1>Micro Center GPU Tracker</h1>
             <p id="last-updated">Loading...</p>
             
-            <!-- Search and Filter Controls -->
+            <!-- SCRAPE CONTROLS -->
+            <div class="scrape-controls">
+                <select id="scrape-store-select" class="scrape-select">
+                    <!-- Populated by JS -->
+                </select>
+                <button id="scrape-btn" class="scrape-btn" onclick="triggerScrape()">Update Stock Now</button>
+            </div>
+            <p id="scrape-status" class="status-msg"></p>
+
+            <!-- FILTER CONTROLS -->
             <div class="controls">
-                <input type="text" id="search-input" class="search-input" placeholder="Search for GPU">
+                <input type="text" id="search-input" class="search-input" placeholder="Search model...">
+                
                 <select id="brand-filter" class="brand-select">
                     <option value="all">All Brands</option>
-                    <!-- Options will be populated by JS -->
+                </select>
+
+                <!-- NEW: Store Filter -->
+                <select id="store-filter" class="brand-select">
+                    <option value="all">All Stores</option>
                 </select>
             </div>
         </header>

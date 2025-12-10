@@ -4,3 +4,5 @@ mysql-connector-python
 python-dotenv
 selenium
 webdriver-manager
+flask
+flask-cors

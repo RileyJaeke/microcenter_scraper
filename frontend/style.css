@@ -1,0 +1,271 @@
+/* --- GLOBAL RESET (Critical for layout stability) --- */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* --- CONTROLS (Search & Filter) --- */
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+}
+
+.search-input, .brand-select {
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.search-input {
+    width: 300px;
+    max-width: 100%;
+}
+
+.brand-select {
+    cursor: pointer;
+    background-color: white;
+    min-width: 150px;
+}
+
+.search-input:focus, .brand-select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+}
+
+/* --- THE GRID BOX --- */
+.grid {
+    display: grid;
+    /* This creates the columns */
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    
+    /* Box Dimensions */
+    width: 100%;
+    height: 70vh; /* Fixed scrollable height */
+    overflow-y: auto;
+    padding: 20px;
+    
+    /* Visuals */
+    background-color: #e9ecef;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* --- THE CARD --- */
+.gpu-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    /* display: flex with height: 100% makes the card fill the grid cell exactly */
+    display: flex;
+    flex-direction: column;
+    height: 100%; 
+    position: relative; /* Keeps content contained */
+    transition: transform 0.2s;
+}
+
+.gpu-card:hover {
+    transform: translateY(-5px);
+    z-index: 1; /* Bring to front on hover */
+}
+
+.card-image {
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: #fff;
+    border-bottom: 1px solid #eee;
+    /* Rounded corners for the top of the card */
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    flex-shrink: 0;
+}
+
+.card-image img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.card-details {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Expands to fill all available space */
+}
+
+.brand {
+    font-size: 0.8em;
+    color: #666;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+h3 {
+    margin: 0 0 10px 0;
+    font-size: 1.1em;
+    line-height: 1.4;
+    word-wrap: break-word; /* Prevents long text from breaking layout */
+}
+
+.price {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.stock {
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 15px;
+    font-size: 0.9em;
+    align-self: flex-start;
+}
+
+.stock-in {
+    background-color: #e6fffa;
+    color: #047857;
+}
+
+.stock-out {
+    background-color: #fff5f5;
+    color: #c53030;
+}
+
+/* --- BUTTONS --- */
+.card-actions {
+    /* This pushes the buttons to the very bottom of the white card */
+    margin-top: auto; 
+    display: flex;
+    gap: 10px;
+    padding-top: 10px;
+}
+
+.buy-btn, .history-btn {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.2s;
+    flex: 1;
+    font-size: 0.9em;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.buy-btn {
+    background-color: #007bff;
+    color: white;
+}
+
+.buy-btn:hover {
+    background-color: #0056b3;
+}
+
+.history-btn {
+    background-color: #6c757d;
+    color: white;
+}
+
+.history-btn:hover {
+    background-color: #5a6268;
+}
+
+/* --- SCROLLBAR --- */
+.grid::-webkit-scrollbar {
+    width: 10px;
+}
+
+.grid::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.grid::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.grid::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* --- MODAL --- */
+.modal {
+    display: none; 
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 800px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    position: relative;
+}
+
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.chart-container {
+    position: relative;
+    height: 400px;
+    width: 100%;
+}
